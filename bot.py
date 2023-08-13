@@ -61,7 +61,7 @@ class DiscordBot(commands.Cog):
         gen = config['gensettings']
         gen['prompt'] = prompt
 
-        endpoint = None
+        endpoint = config['endpoint']
         if os.getenv('ENDPOINT') is not None:
             endpoint = f"http://{os.getenv('ENDPOINT')}:8000/completion"
         if config['endpoint'] != "http://0.0.0.0:8000/completion":
