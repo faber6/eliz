@@ -60,9 +60,13 @@ class DiscordBot(commands.Cog):
     def enma_respond(self, config, prompt):
         gen = config['gensettings']
         gen['prompt'] = prompt
-        endpoint = config['endpoint']
+
+        endpoint = None
         if os.getenv('ENDPOINT') is not None:
             endpoint = f"http://{os.getenv('ENDPOINT')}:8000/completion"
+        if config['endpoint'] != "http://0.0.0.0:8000/completion":
+            endpoint = config['endpoint']
+
         reponse = requests.post(endpoint, json=gen)
         return reponse.json()
 
