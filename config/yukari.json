@@ -17,8 +17,7 @@
             "temperature": 0.65,
             "top_p": 0.8,
             "repetition_penalty": 1.225,
-            "penalty_alpha": 0.6,
-            "stop_sequence": "."
+            "penalty_alpha": 0.6
         }
     }
 }

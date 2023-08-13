@@ -19,8 +19,7 @@
             "top_p": 0.9,
             "top_k": 50,
             "repetition_penalty": 1.115,
-            "penalty_alpha": 0.6,
-            "stop_sequence": "."
+            "penalty_alpha": 0.6
         }
     }
 }
