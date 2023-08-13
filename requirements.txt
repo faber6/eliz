@@ -1,0 +1,3 @@
+discord.py[speed]
+python-dotenv
+transformers
