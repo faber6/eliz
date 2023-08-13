@@ -3,11 +3,12 @@ from dotenv import load_dotenv
 import logging
 import json
 import re
+import requests
 
 import discord
 from discord.ext import commands
 
-from utils import anti_spam, cut_trailing_sentence, ContextPreprocessor, ContextEntry, enma_respond
+from utils import anti_spam, cut_trailing_sentence, ContextPreprocessor, ContextEntry
 
 load_dotenv()
 
@@ -34,7 +35,7 @@ class DiscordBot(commands.Cog):
         async with message.channel.typing():
             conversation = await self.build_ctx(conversation)
 
-            response = enma_respond(
+            response = self.enma_respond(
                 self.config['model_provider'], conversation)
 
             # this actually brokes the reponse in some case
@@ -55,6 +56,15 @@ class DiscordBot(commands.Cog):
             else:
                 count = count - 1
                 re = response[0]['generated_text'].splitlines()[count]
+
+    def enma_respond(self, config, prompt):
+        gen = config['gensettings']
+        gen['prompt'] = prompt
+        endpoint = config['endpoint']
+        if os.getenv('ENDPOINT') is not None:
+            endpoint = f"http://{os.getenv('ENDPOINT')}:8000/completion"
+        reponse = requests.post(endpoint, json=gen)
+        return reponse.json()
 
     async def build_ctx(self, conversation):
         contextmgr = ContextPreprocessor(

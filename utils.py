@@ -1,6 +1,5 @@
 from difflib import SequenceMatcher
 from transformers import AutoTokenizer
-import requests
 
 tokenizer = AutoTokenizer.from_pretrained('gpt2')
 
@@ -393,10 +392,3 @@ class ContextEntry:
 
     def get_text(self, max_length, token_budget):
         return tokenizer.decode(self.trim(max_length, token_budget))
-
-
-def enma_respond(config, prompt):
-    gen = config['gensettings']
-    gen['prompt'] = prompt
-    reponse = requests.post(config['endpoint'], json=gen)
-    return reponse.json()

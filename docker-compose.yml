@@ -4,3 +4,4 @@ services:
     environment:
       - DISCORD_TOKEN=$DISCORD_TOKEN
       - CONFIG=$CONFIG
+      - ENDPOINT=$ENDPOINT
