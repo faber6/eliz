@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import logging
 import json
 import re
-import requests
+import aiohttp
 
 import discord
 from discord.ext import commands
@@ -35,7 +35,7 @@ class DiscordBot(commands.Cog):
         async with message.channel.typing():
             conversation = await self.build_ctx(conversation)
 
-            response = self.enma_respond(
+            response = await self.enma_respond(
                 self.config['model_provider'], conversation)
 
             # this actually brokes the reponse in some case
@@ -49,15 +49,16 @@ class DiscordBot(commands.Cog):
     def get_respond(self, response):
         count = -1
         while True:
-            re = response[0]['generated_text'].splitlines()[count]
-            if re.startswith(self.config['name']):
-                re = re.replace(self.config['name'] + ': ', '')
-                return re
-            else:
-                count = count - 1
-                re = response[0]['generated_text'].splitlines()[count]
+            try:
+                resp = response[0]['generated_text'].splitlines()[count]
+                if resp.startswith(self.config['name']):
+                    return resp.replace(self.config['name'] + ':', '')
+                else:
+                    count = count - 1
+            except KeyError:
+                return 'error: ' + response['error']
 
-    def enma_respond(self, config, prompt):
+    async def enma_respond(self, config, prompt):
         gen = config['gensettings']
         gen['prompt'] = prompt
 
@@ -67,8 +68,9 @@ class DiscordBot(commands.Cog):
         if config['endpoint'] != "http://0.0.0.0:8000/completion":
             endpoint = config['endpoint']
 
-        reponse = requests.post(endpoint, json=gen)
-        return reponse.json()
+        async with aiohttp.ClientSession() as session:
+            async with session.post(endpoint, json=gen) as resp:
+                return await resp.json()
 
     async def build_ctx(self, conversation):
         contextmgr = ContextPreprocessor(
