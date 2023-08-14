@@ -11,7 +11,6 @@
         "context_size": 924
     },
     "model_provider": {
-        "name": "enma",
         "endpoint": "http://0.0.0.0:8000/completion",
         "gensettings": {
             "engine": "pygmalion",
