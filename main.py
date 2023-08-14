@@ -30,6 +30,7 @@ class Client(commands.Bot):
 
 
 client = Client()
+client.remove_command("help")
 
 activity = None
 with open(f"./config/{os.getenv('CONFIG')}.json", encoding="utf-8") as f:
