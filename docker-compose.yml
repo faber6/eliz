@@ -3,5 +3,7 @@ services:
     build: .
     environment:
       - DISCORD_TOKEN=$DISCORD_TOKEN
+      - DISCORD_PREFIX=$DISCORD_PREFIX
+      - DISCORD_STATUS=$DISCORD_STATUS
       - CONFIG=$CONFIG
       - ENDPOINT=$ENDPOINT

@@ -44,7 +44,7 @@ with open(f"./config/{os.getenv('CONFIG', config['config'])}.json", encoding="ut
 
 @client.event
 async def on_ready():
-    if activity and os.getenv("STATUS", config["status"]).lower() == "on":
+    if activity and os.getenv("DISCORD_STATUS", config["discord_status"]).lower() == "on":
         await client.change_presence(activity=discord.CustomActivity(activity))
     print("Logged in as {0} ({0.id})".format(client.user))
 
