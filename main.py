@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 import logging
 import json
+import yaml
 
 import discord
 from discord.ext import commands
@@ -14,11 +15,15 @@ logging.basicConfig(
     datefmt="%m/%d/%Y %I:%M:%S %p",
 )
 
+with open("./config.yaml", "r") as f:
+    config = yaml.safe_load(f)
+
 
 class Client(commands.Bot):
     def __init__(self):
         intents = discord.Intents.all()
-        super().__init__(command_prefix=os.getenv("PREFIX", "?"), intents=intents)
+        super().__init__(command_prefix=os.getenv(
+            "DISCORD_PREFIX", config['discord_prefix']), intents=intents)
 
     async def setup_hook(self):
         await client.load_extension("bot")
@@ -33,15 +38,14 @@ client = Client()
 client.remove_command("help")
 
 activity = None
-with open(f"./config/{os.getenv('CONFIG')}.json", encoding="utf-8") as f:
-    config = json.load(f)
-    activity = config["client_args"]["status"]
+with open(f"./config/{os.getenv('CONFIG', config['config'])}.json", encoding="utf-8") as f:
+    activity = json.load(f)["client_args"]["status"]
 
 
 @client.event
 async def on_ready():
-    if activity is not None:
+    if activity and os.getenv("STATUS", config["status"]).lower() == "on":
         await client.change_presence(activity=discord.CustomActivity(activity))
     print("Logged in as {0} ({0.id})".format(client.user))
 
-client.run(os.getenv("DISCORD_TOKEN"), reconnect=True)
+client.run(os.getenv("DISCORD_TOKEN", config["discord_token"]), reconnect=True)

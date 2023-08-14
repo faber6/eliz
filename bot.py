@@ -4,6 +4,7 @@ import logging
 import json
 import re
 import aiohttp
+import yaml
 
 import discord
 from discord.ext import commands
@@ -16,8 +17,10 @@ load_dotenv()
 class DiscordBot(commands.Cog):
     def __init__(self, client):
         self.client = client
-        with open(f"./config/{os.getenv('CONFIG')}.json", encoding="utf-8") as f:
-            self.config = json.load(f)
+        with open("./config.yaml", "r") as f:
+            self.config = yaml.safe_load(f)
+        with open(f"./config/{os.getenv('CONFIG', self.config['config'])}.json", encoding="utf-8") as f:
+            self.char_config = json.load(f)
 
     @commands.command()
     async def toggle(self, ctx):
@@ -27,7 +30,7 @@ class DiscordBot(commands.Cog):
     async def on_message(self, message):
         if message.author == self.client.user:
             return
-        if self.client.user.mentioned_in(message) or any(nickname.lower() in message.content.lower() for nickname in self.config['client_args']['nicknames']):
+        if self.client.user.mentioned_in(message) or any(nickname.lower() in message.content.lower() for nickname in self.char_config['client_args']['nicknames']):
             conversation = await self.get_msg_ctx(message.channel)
             await self.respond(conversation, message)
 
@@ -35,8 +38,7 @@ class DiscordBot(commands.Cog):
         async with message.channel.typing():
             conversation = await self.build_ctx(conversation)
 
-            response = await self.enma_respond(
-                self.config['model_provider'], conversation)
+            response = await self.enma_respond(conversation)
 
             # this actually brokes the reponse in some case
             # response = cut_trailing_sentence(
@@ -51,22 +53,23 @@ class DiscordBot(commands.Cog):
         while True:
             try:
                 resp = response[0]['generated_text'].splitlines()[count]
-                if resp.startswith(self.config['name']):
-                    return resp.replace(self.config['name'] + ':', '')
+                if resp.startswith(self.char_config['name']):
+                    return resp.replace(self.char_config['name'] + ':', '')
                 else:
                     count = count - 1
             except KeyError:
                 return 'error: ' + response['error']
 
-    async def enma_respond(self, config, prompt):
-        gen = config['gensettings']
+    async def enma_respond(self, prompt):
+        gen = self.char_config['model_provider']['gensettings']
         gen['prompt'] = prompt
 
-        endpoint = config['endpoint']
-        if os.getenv('ENDPOINT') is not None:
-            endpoint = f"http://{os.getenv('ENDPOINT')}:8000/completion"
-        if config['endpoint'] != "http://0.0.0.0:8000/completion":
-            endpoint = config['endpoint']
+        endpoint = self.char_config['model_provider']['endpoint']
+        has_endpoint = os.getenv('ENDPOINT', self.config['endpoint'])
+        if has_endpoint:
+            endpoint = f"http://{has_endpoint}:8000/completion"
+        if self.char_config['model_provider']['endpoint'] != "http://0.0.0.0:8000/completion":
+            endpoint = self.char_config['model_provider']['endpoint']
 
         async with aiohttp.ClientSession() as session:
             async with session.post(endpoint, json=gen) as resp:
@@ -74,9 +77,9 @@ class DiscordBot(commands.Cog):
 
     async def build_ctx(self, conversation):
         contextmgr = ContextPreprocessor(
-            self.config['client_args']['context_size'])
+            self.char_config['client_args']['context_size'])
 
-        prompt = self.config['prompt']
+        prompt = self.char_config['prompt']
         prompt_entry = ContextEntry(
             text=prompt,
             prefix='',
@@ -94,7 +97,7 @@ class DiscordBot(commands.Cog):
         conversation_entry = ContextEntry(
             text=conversation,
             prefix='',
-            suffix=f'\n{self.config["name"]}:',
+            suffix=f'\n{self.char_config["name"]}:',
             reserved_tokens=512,
             insertion_order=0,
             insertion_position=-1,
@@ -106,7 +109,7 @@ class DiscordBot(commands.Cog):
         )
         contextmgr.add_entry(conversation_entry)
 
-        return contextmgr.context(self.config['client_args']['context_size'])
+        return contextmgr.context(self.char_config['client_args']['context_size'])
 
     async def get_msg_ctx(self, channel):
         messages = [message async for message in channel.history(limit=40)]
@@ -119,7 +122,7 @@ class DiscordBot(commands.Cog):
                 content = re.sub(r'\<[^>]*\>', '', message.content)
                 if content != '':
                     if message.author.name in [self.client.user.name, self.client.user.display_name, self.client.user.display_name]:
-                        chain.append(f'{self.config["name"]}: {content}')
+                        chain.append(f'{self.char_config["name"]}: {content}')
                     else:
                         chain.append(f'{message.author.name}: {content}')
                 continue

@@ -1,0 +1,5 @@
+config: aya
+endpoint:  # 192.168.2.59
+discord_token: 
+status: "on"
+discord_prefix: "?"
