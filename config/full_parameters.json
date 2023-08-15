@@ -13,11 +13,27 @@
         "endpoint": "http://0.0.0.0:8000/completion",
         "gensettings": {
             "engine": "pygmalion",
+            "max_new_tokens": 20,
+            "eos_token_id": 198,
             "temperature": 0.45,
             "top_p": 0.8,
+            "top_k": 12,
             "typical_p": 0.98,
             "repetition_penalty": 1.125,
-            "penalty_alpha": 0.6
+            "do_sample": true,
+            "penalty_alpha": 0.6,
+            "num_return_sequences": 1,
+            "stop_sequence": ".",
+            "bad_words": [
+                "http",
+                "https",
+                "@"
+            ],
+            "sequence_bias": {
+                "ayaya": 50.0,
+                "kek": 25.0,
+                "AYAYA": 1000.0
+            }
         }
     }
 }
