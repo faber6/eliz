@@ -28,9 +28,9 @@ class DiscordBot(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.author == self.client.user:
+        if message.author == self.client.user or message.content.startswith(os.getenv("DISCORD_PREFIX", self.config['discord_prefix'])):
             return
-        if self.client.user.mentioned_in(message) or any(nickname.lower() in message.content.lower() for nickname in self.char_config['client_args']['nicknames']):
+        if self.client.user.mentioned_in(message) or any(nickname.lower() in message.content.lower() for nickname in self.char_config['client_args']['nicknames']) or isinstance(message.channel, discord.channel.DMChannel):
             conversation = await self.get_msg_ctx(message.channel)
             await self.respond(conversation, message)
 
