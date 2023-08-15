@@ -9,7 +9,7 @@ import yaml
 import discord
 from discord.ext import commands
 
-from utils import anti_spam, cut_trailing_sentence, ContextPreprocessor, ContextEntry
+from utils import anti_spam, ContextPreprocessor, ContextEntry
 
 load_dotenv()
 
@@ -37,15 +37,8 @@ class DiscordBot(commands.Cog):
     async def respond(self, conversation, message):
         async with message.channel.typing():
             conversation = await self.build_ctx(conversation)
-
             response = await self.enma_respond(conversation)
-
-            # this actually brokes the reponse in some case
-            # response = cut_trailing_sentence(
-            #     self.get_respond(response))
-
             response = self.get_respond(response)
-
             await message.channel.send(response)
 
     def get_respond(self, response):
