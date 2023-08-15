@@ -1,8 +1,8 @@
 # eliz
-Discord Chatbot that integrate with this [enma-api](https://github.com/faber6/enma-api) fork. Based on [eliza](https://github.com/harubaru/eliza) and [Shimeji](https://github.com/hitomi-team/shimeji)
+discord chatbot that integrates with this [enma-api](https://github.com/faber6/enma-api) fork, based on [eliza](https://github.com/harubaru/eliza) and [shimeji](https://github.com/hitomi-team/shimeji)
 
 ## Installations
-0. Virtual Env
+0. Virtual env
 ```
 python3 -m venv venv && source venv/bin/activate
 ```
@@ -12,11 +12,13 @@ python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-2. Edit config
+2. Edit config or start.sh (.env config will be prioritized)
 
-3. Edit start.sh
-
-4. Run
+3. Run
+```
+python main.py
+```
+or
 ```
 chmod +x ./start.sh && ./start.sh
 ```
