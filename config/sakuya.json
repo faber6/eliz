@@ -6,8 +6,7 @@
             "sakuya",
             "meido"
         ],
-        "status": "playing with sharp objects 🗡️",
-        "context_size": 924
+        "status": "playing with sharp objects 🗡️"
     },
     "model_provider": {
         "endpoint": "http://0.0.0.0:8000/completion",

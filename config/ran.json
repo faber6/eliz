@@ -6,8 +6,7 @@
             " ran",
             "ran "
         ],
-        "status": "listening to Chen playing~",
-        "context_size": 924
+        "status": "listening to Chen playing~"
     },
     "model_provider": {
         "endpoint": "http://0.0.0.0:8000/completion",

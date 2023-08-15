@@ -6,8 +6,7 @@
             "chen",
             "chensic"
         ],
-        "status": "playing with the samon",
-        "context_size": 924
+        "status": "playing with the samon"
     },
     "model_provider": {
         "endpoint": "http://0.0.0.0:8000/completion",

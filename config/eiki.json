@@ -7,8 +7,7 @@
             "shiki",
             "yama"
         ],
-        "status": "watching from the bar ⚖️",
-        "context_size": 924
+        "status": "watching from the bar ⚖️"
     },
     "model_provider": {
         "endpoint": "http://0.0.0.0:8000/completion",

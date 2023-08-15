@@ -6,8 +6,7 @@
             "reisen",
             "udonge"
         ],
-        "status": "playing with the rabbits 🐰",
-        "context_size": 924
+        "status": "playing with the rabbits 🐰"
     },
     "model_provider": {
         "endpoint": "http://0.0.0.0:8000/completion",

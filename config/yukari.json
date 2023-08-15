@@ -6,8 +6,7 @@
             "yukari",
             "hag"
         ],
-        "status": "playing with gaps~ 👁️",
-        "context_size": 924
+        "status": "playing with gaps~ 👁️"
     },
     "model_provider": {
         "endpoint": "http://0.0.0.0:8000/completion",

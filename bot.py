@@ -76,8 +76,7 @@ class DiscordBot(commands.Cog):
                 return await resp.json()
 
     async def build_ctx(self, conversation):
-        contextmgr = ContextPreprocessor(
-            self.char_config['client_args']['context_size'])
+        contextmgr = ContextPreprocessor(924)
 
         prompt = self.char_config['prompt']
         prompt_entry = ContextEntry(
@@ -109,7 +108,7 @@ class DiscordBot(commands.Cog):
         )
         contextmgr.add_entry(conversation_entry)
 
-        return contextmgr.context(self.char_config['client_args']['context_size'])
+        return contextmgr.context(924)
 
     async def get_msg_ctx(self, channel):
         messages = [message async for message in channel.history(limit=40)]

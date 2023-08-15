@@ -5,8 +5,7 @@
         "nicknames": [
             "komachi"
         ],
-        "status": "watching from the shore 🌺",
-        "context_size": 924
+        "status": "watching from the shore 🌺"
     },
     "model_provider": {
         "endpoint": "http://0.0.0.0:8000/completion",

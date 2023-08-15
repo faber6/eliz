@@ -7,8 +7,7 @@
             "egg",
             "tengu"
         ],
-        "status": "listening to the devil's radio 📰",
-        "context_size": 924
+        "status": "listening to the devil's radio 📰"
     },
     "model_provider": {
         "endpoint": "http://0.0.0.0:8000/completion",

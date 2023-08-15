@@ -7,8 +7,7 @@
             "raymoo",
             "the miko"
         ],
-        "status": "watching for youkai 👹",
-        "context_size": 924
+        "status": "watching for youkai 👹"
     },
     "model_provider": {
         "endpoint": "http://0.0.0.0:8000/completion",
