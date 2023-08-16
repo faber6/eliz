@@ -257,6 +257,11 @@ def trim_newlines(tokens, trim_dir, limit):
     return acc_tokens
 
 
+def split_into_sentences(str):
+    # preserve line breaks too
+    return re.split(r'(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!)\s', str)
+
+
 def trim_sentences(tokens, trim_dir, limit):
     if (trim_dir == TRIM_DIR_NONE) or (len(tokens) <= limit):
         return tokens
