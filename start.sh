@@ -5,5 +5,5 @@
 # export CONFIG="aya"
 # export ENDPOINT="192.168.2.59"
 
-venv/bin/python main.py
+$(dirname "$0")/venv/bin/python $(dirname "$0")/main.py
 echo "Exited"

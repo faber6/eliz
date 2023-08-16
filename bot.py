@@ -17,9 +17,9 @@ load_dotenv()
 class DiscordBot(commands.Cog):
     def __init__(self, client):
         self.client = client
-        with open("./config.yaml", "r") as f:
+        with open(os.path.dirname(os.path.abspath(__file__))+"/config.yaml", "r") as f:
             self.config = yaml.safe_load(f)
-        with open(f"./config/{os.getenv('CONFIG', self.config['config'])}.json", encoding="utf-8") as f:
+        with open(os.path.dirname(os.path.abspath(__file__))+f"/config/{os.getenv('CONFIG', self.config['config'])}.json", encoding="utf-8") as f:
             self.char_config = json.load(f)
 
     @commands.command()

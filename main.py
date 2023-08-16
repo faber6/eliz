@@ -9,13 +9,14 @@ from discord.ext import commands
 
 load_dotenv()
 logging.basicConfig(
-    handlers=[logging.FileHandler("./log", "a", "utf-8")],
+    handlers=[logging.FileHandler(
+        os.path.dirname(os.path.abspath(__file__))+"/log", "a", "utf-8")],
     level=logging.INFO,
     format="%(asctime)s %(message)s",
     datefmt="%m/%d/%Y %I:%M:%S %p",
 )
 
-with open("./config.yaml", "r") as f:
+with open(os.path.dirname(os.path.abspath(__file__))+"/config.yaml", "r") as f:
     config = yaml.safe_load(f)
 
 
@@ -38,7 +39,7 @@ client = Client()
 client.remove_command("help")
 
 activity = None
-with open(f"./config/{os.getenv('CONFIG', config['config'])}.json", encoding="utf-8") as f:
+with open(os.path.dirname(os.path.abspath(__file__))+f"/config/{os.getenv('CONFIG', config['config'])}.json", encoding="utf-8") as f:
     activity = json.load(f)["client_args"]["status"]
 
 
